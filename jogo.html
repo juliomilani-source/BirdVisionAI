@@ -10,6 +10,29 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        #liveRanking {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 220px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid #00d4ff;
+    font-size: 14px;
+    z-index: 50;
+}
+
+#liveRanking h3 {
+    margin: 0 0 10px 0;
+    color: #00d4ff;
+    text-align: center;
+}
+
+#liveRanking p {
+    margin: 4px 0;
+}
     * { box-sizing: border-box; }
     .dev-header {
       background: linear-gradient(90deg, #fff 0%, #e8f4fc 50%, #fff 100%);
@@ -370,12 +393,13 @@
         ranking = ranking.slice(0, 10);
 
         localStorage.setItem(
-            "ranking",
-            JSON.stringify(ranking)
-        );
+        "ranking",
+        JSON.stringify(ranking)
+    );
 
-        console.log("Pontuação salva:", nome, score);
-    }
+    atualizarRanking();
+
+    console.log("Pontuação salva:", nome, score);
 
         function drawWing(ctx, x, y, size, phase, color) {
             ctx.save();
@@ -511,8 +535,33 @@
             draw();
             requestAnimationFrame(gameLoop);
         }
+        function atualizarRanking() {
 
-        init();
+    const rankingDiv =
+        document.getElementById("liveRanking");
+
+    let ranking =
+        JSON.parse(localStorage.getItem("ranking")) || [];
+
+    ranking.sort((a,b) => b.pontos - a.pontos);
+
+    let html = "<h3>🏆 TOP 5</h3>";
+
+    ranking.slice(0,5).forEach((jogador, index) => {
+
+        html += `
+            <p>
+                ${index + 1}º ${jogador.nome}
+                - ${jogador.pontos}
+            </p>
+        `;
+
+    });
+
+    rankingDiv.innerHTML = html;
+}
+    atualizarRanking();
+    init();
     </script>
   </div>
 </body>
