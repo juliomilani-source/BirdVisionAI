@@ -373,26 +373,25 @@
         instructions.classList.remove('hidden');
         noHandWarning.classList.add('hidden');
     }
-
         function salvarPontuacao() {
 
-        const nome = localStorage.getItem("jogador");
+    const nome = localStorage.getItem("jogador");
 
-        if (!nome) return;
+    if (!nome) return;
 
-        let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+    let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
 
-        ranking.push({
-            nome: nome,
-            pontos: score,
-            data: Date.now()
-        });
+    ranking.push({
+        nome: nome,
+        pontos: score,
+        data: Date.now()
+    });
 
-        ranking.sort((a, b) => b.pontos - a.pontos);
+    ranking.sort((a, b) => b.pontos - a.pontos);
 
-        ranking = ranking.slice(0, 10);
+    ranking = ranking.slice(0, 10);
 
-        localStorage.setItem(
+    localStorage.setItem(
         "ranking",
         JSON.stringify(ranking)
     );
@@ -400,7 +399,7 @@
     atualizarRanking();
 
     console.log("Pontuação salva:", nome, score);
-
+}
         function drawWing(ctx, x, y, size, phase, color) {
             ctx.save();
             ctx.translate(x, y);
