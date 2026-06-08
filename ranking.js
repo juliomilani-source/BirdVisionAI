@@ -1,41 +1,19 @@
-import {
-    db,
-    ref,
-    onValue
-} from "./firebase.js";
-
 const rankingDiv = document.getElementById("ranking");
 
-const rankingRef = ref(db, "ranking");
+let ranking =
+    JSON.parse(localStorage.getItem("ranking")) || [];
 
-onValue(rankingRef, (snapshot) => {
+ranking.sort((a, b) => b.pontos - a.pontos);
 
-    const dados = snapshot.val();
+rankingDiv.innerHTML = "<h2>Top 10 Jogadores</h2>";
 
-    if(!dados){
-        rankingDiv.innerHTML = "<p>Nenhuma pontuação ainda.</p>";
-        return;
-    }
+ranking.forEach((jogador, index) => {
 
-    let lista = [];
-
-    Object.values(dados).forEach(item => {
-        lista.push(item);
-    });
-
-    lista.sort((a,b) => b.pontos - a.pontos);
-
-    rankingDiv.innerHTML = "";
-
-    lista.slice(0,10).forEach((jogador, index) => {
-
-        rankingDiv.innerHTML += `
-            <p>
-                ${index+1}º - ${jogador.nome}
-                (${jogador.pontos} pts)
-            </p>
-        `;
-
-    });
+    rankingDiv.innerHTML += `
+        <p>
+            ${index + 1}º - ${jogador.nome}
+            (${jogador.pontos} pontos)
+        </p>
+    `;
 
 });
