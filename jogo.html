@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passarinho do Dedo — Com Esqueleto | Josimar Menegatt</title>
+    <title>Passarinho do Dedo — Com Esqueleto </title>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
@@ -91,7 +91,7 @@
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
   <header class="dev-header">
-    <img class="dev-avatar" src="assets/avatar.jpg" alt="Foto de Josimar Menegatt"
+    <img class="dev-avatar" src="assets/avatar.jpg" alt="Foto de Julio"
          onerror="this.style.display='none'; document.getElementById('avatar-fallback').style.display='flex';">
     <div id="avatar-fallback" class="dev-avatar-fallback" style="display:none;" aria-hidden="true">JM</div>
     <div class="dev-identity">
@@ -148,7 +148,12 @@
 
     <div id="liveRanking"></div>
 
-    <script>
+    <script type="module">
+        import {
+            salvarRanking,
+            carregarRanking
+        } from "./js/rankingOnline.js";
+
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const video = document.getElementById('video');
@@ -375,31 +380,14 @@
     }
         function salvarPontuacao() {
 
-    const nome = localStorage.getItem("jogador");
+            const nome = localStorage.getItem("jogador");
 
-    if (!nome) return;
+        if (!nome) return;
 
-    let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+            salvarRanking(nome, score);
 
-    ranking.push({
-        nome: nome,
-        pontos: score,
-        data: Date.now()
-    });
-
-    ranking.sort((a, b) => b.pontos - a.pontos);
-
-    ranking = ranking.slice(0, 10);
-
-    localStorage.setItem(
-        "ranking",
-        JSON.stringify(ranking)
-    );
-
-    atualizarRanking();
-
-    console.log("Pontuação salva:", nome, score);
-}
+            console.log("Pontuação salva no Firebase:", nome, score);
+    }
         function drawWing(ctx, x, y, size, phase, color) {
             ctx.save();
             ctx.translate(x, y);
@@ -534,31 +522,32 @@
             draw();
             requestAnimationFrame(gameLoop);
         }
+
         function atualizarRanking() {
 
-    const rankingDiv =
-        document.getElementById("liveRanking");
+    carregarRanking((ranking) => {
 
-    let ranking =
-        JSON.parse(localStorage.getItem("ranking")) || [];
+        let html = "<h3>🏆 TOP 10 GLOBAL</h3>";
 
-    ranking.sort((a,b) => b.pontos - a.pontos);
+        ranking.forEach((jogador, index) => {
 
-    let html = "<h3>🏆 TOP 5</h3>";
+            let medalha = "";
 
-    ranking.slice(0,5).forEach((jogador, index) => {
+            if (index === 0) medalha = "🥇";
+            else if (index === 1) medalha = "🥈";
+            else if (index === 2) medalha = "🥉";
 
-        html += `
-            <p>
-                ${index + 1}º ${jogador.nome}
-                - ${jogador.pontos}
-            </p>
-        `;
+            html += `
+                <p>
+                    ${medalha} ${index + 1}º ${jogador.nome}
+                    - ${jogador.pontos}
+                </p>
+            `;
+        });
 
+        document.getElementById("liveRanking").innerHTML = html;
     });
-
-    rankingDiv.innerHTML = html;
-}
+}    
     atualizarRanking();
     init();
     </script>
