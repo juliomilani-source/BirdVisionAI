@@ -8,6 +8,19 @@
 
 <style>
 
+#background{
+    position:fixed;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    z-index:-1;
+}
+
 *{
     margin:0;
     padding:0;
@@ -23,173 +36,26 @@ body{
     align-items:center;
 }
 
-/* NUVENS */
-
-.cloud{
-    position:absolute;
-    background:white;
-    border-radius:50px;
-    opacity:0.8;
-}
-
-.cloud::before,
-.cloud::after{
-    content:"";
-    position:absolute;
-    background:white;
-    border-radius:50%;
-}
-
-.cloud1{
-    width:120px;
-    height:40px;
-    top:80px;
-    left:-150px;
-    animation:nuvem 25s linear infinite;
-}
-
-.cloud1::before{
-    width:50px;
-    height:50px;
-    left:15px;
-    top:-20px;
-}
-
-.cloud1::after{
-    width:60px;
-    height:60px;
-    right:15px;
-    top:-25px;
-}
-
-.cloud2{
-    width:180px;
-    height:55px;
-    top:180px;
-    left:-250px;
-    animation:nuvem 35s linear infinite;
-}
-
-.cloud2::before{
-    width:60px;
-    height:60px;
-    left:20px;
-    top:-20px;
-}
-
-.cloud2::after{
-    width:80px;
-    height:80px;
-    right:20px;
-    top:-30px;
-}
-
-@keyframes nuvem{
-    from{
-        transform:translateX(0);
-    }
-    to{
-        transform:translateX(2000px);
-    }
-}
-
-/* MONTANHAS CARTOON */
-
-.mountain{
-    position:absolute;
-    bottom:-50px;
-    border-radius:50%;
-    filter:drop-shadow(0 5px 10px rgba(0,0,0,.2));
-}
-
-.mountain::before{
-    content:"";
-    position:absolute;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%);
-    width:120px;
-    height:80px;
-    background:white;
-    border-radius:50%;
-}
-
-.m1{
-    left:-100px;
-    width:500px;
-    height:400px;
-
-    background:
-    radial-gradient(
-        circle at top,
-        #8bc34a 0%,
-        #4caf50 60%,
-        #2e7d32 100%
-    );
-}
-
-.m2{
-    left:250px;
-    width:600px;
-    height:450px;
-
-    background:
-    radial-gradient(
-        circle at top,
-        #9ccc65 0%,
-        #43a047 60%,
-        #1b5e20 100%
-    );
-}
-
-.m3{
-    right:-150px;
-    width:550px;
-    height:420px;
-
-    background:
-    radial-gradient(
-        circle at top,
-        #aed581 0%,
-        #66bb6a 60%,
-        #2e7d32 100%
-    );
-}
-
-.mountain::before{
-    content:"";
-    position:absolute;
-
-    top:20px;
-    left:50%;
-
-    transform:translateX(-50%);
-
-    width:120px;
-    height:80px;
-
-    background:white;
-
-    border-radius:
-    50% 50%
-    40% 40%;
-}
-
 /* PAINEL */
 
 .container{
     position:relative;
     z-index:10;
 
-    background:white;
-    padding:30px;
-    border-radius:25px;
-
     width:420px;
+
+    padding:30px;
+
+    background:rgba(255,255,255,0.92);
+
+    backdrop-filter:blur(10px);
+
+    border-radius:25px;
 
     text-align:center;
 
-    box-shadow:0 0 25px rgba(0,0,0,0.25);
+    box-shadow:
+    0 10px 40px rgba(0,0,0,.25);
 }
 
 h1{
